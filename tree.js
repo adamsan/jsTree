@@ -61,7 +61,6 @@ function Node(x,y,lev){
 		ctx.stroke();
 
 		depth = depth || 0;
-		//log(depth);
 		if(depth>0){
 			depth--;
 			if(leftNode){leftNode.draw(depth);}
@@ -131,16 +130,44 @@ function Mapper(l,h){
 	        range.high = h;	
 	}
 	//inverse mapping
-	this.imap =function(y){
+	function _imap(y){
 		var norm = (y-range.low)/(range.high-range.low);
-		console.log(norm);
 		return(norm*(fromRange.high-fromRange.low)+fromRange.low);
-
 	}	
-	this.map = function(y){
+	function _map(y){
 		var norm = (y-fromRange.low)/(fromRange.high-fromRange.low);
 		return(norm*(range.high-range.low)+range.low);
 	}
+
+	this.imap = function(y,propertiesTomap){
+		if(typeof(y)=='number'){
+			return _imap(y);
+		}else if(typeof(y)=='object'){
+			propertiesTomap = propertiesTomap || ['x','y'];
+			for(var i=0;i<propertiesTomap.length;i++){
+				pname = propertiesTomap[i];
+				if(pname in y){
+					y[pname] = _imap(y[pname]);
+				}
+			}
+			return(y);
+		}
+	}
+	this.map = function(y,propertiesTomap){
+		if(typeof(y)=='number'){
+			return _map(y);
+		}else if(typeof(y)=='object'){
+			propertiesTomap = propertiesTomap || ['x','y'];
+			for(var i=0;i<propertiesTomap.length;i++){
+				pname = propertiesTomap[i];
+				if(pname in y){
+					y[pname] = _map(y[pname]);
+				}
+			}
+			return(y);
+		}
+	}
+
 	this.info = function(){
 		return({
 			fromRange:fromRange,

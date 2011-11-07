@@ -116,20 +116,38 @@ function log(msg){
 //helper classes 
 
 //maps a [0,1] interval to a [low,high] interval
-
-function Mapper(){
-	var range = {low:0,high:100};
+function Mapper(l,h){
+	var fromRange = {low:0,high:1.0};
+	var range = {
+		low: l || 0,
+		high: h || 100.0
+	};
+	this.setFromRange = function(l,h){
+		fromRange.low = l;
+	        fromRange.high = h;	
+	}
 	this.setRange = function(l,h){
 		range.low = l;
 	        range.high = h;	
 	}
-	this.map =function(v){
-		return(v/(range.high-range.low)+range.low);
-	}
 	//inverse mapping
-	this.imap = function(y){
-		return((y-range.low)*(range.high-range.low));
+	this.imap =function(y){
+		var norm = (y-range.low)/(range.high-range.low);
+		console.log(norm);
+		return(norm*(fromRange.high-fromRange.low)+fromRange.low);
+
+	}	
+	this.map = function(y){
+		var norm = (y-fromRange.low)/(fromRange.high-fromRange.low);
+		return(norm*(range.high-range.low)+range.low);
+	}
+	this.info = function(){
+		return({
+			fromRange:fromRange,
+			range:range
+		});
 	}
 }
 
-mapper = new Mapper();
+m1 = new Mapper();
+m2 = new Mapper(0,1000);

@@ -3,7 +3,9 @@ ctx = canvas.getContext('2d');
 Node.prototype.counter = 0;
 function Node(x,y,lev){
 	Node.prototype.counter++;
-	var factor = 0.65;
+	var factorL = 0.55;
+	var factorR = 0.65;
+
 	var rotation = Math.PI/3.0 ;
 	var pos = {x:x||0,y:y||0},
 	    pos2 = {x:x||200,y:y||200},
@@ -20,8 +22,8 @@ function Node(x,y,lev){
 		//
 
 		leftNode = new Node();
-		var xd = (pos2.x - pos.x)*factor;
-		var yd = (pos2.y - pos.y)*factor;
+		var xd = (pos2.x - pos.x)*factorL;
+		var yd = (pos2.y - pos.y)*factorL;
 		
 		var xdr = xd*Math.cos(rotation)-yd*Math.sin(rotation);
 		var ydr = xd*Math.sin(rotation)+yd*Math.cos(rotation);
@@ -30,8 +32,8 @@ function Node(x,y,lev){
 
 
 		rightNode = new Node();
-		xd = (pos2.x - pos.x)*factor;
-		yd = (pos2.y - pos.y)*factor;
+		xd = (pos2.x - pos.x)*factorR;
+		yd = (pos2.y - pos.y)*factorR;
 		
 		xdr = xd*Math.cos(-1*rotation)-yd*Math.sin(-1*rotation);
 		ydr = xd*Math.sin(-1*rotation)+yd*Math.cos(-1*rotation);
@@ -45,9 +47,11 @@ function Node(x,y,lev){
 			leftNode.addChilds(depth-1);
 			rightNode.addChilds(depth-1);
 		}
-
 	}
-
+	this.setFactors = function(fL,fR){
+		factorL = fL;
+		factorR = fR;
+	}
 	this.setPos = function(p1,p2){
 		pos = p1;
 		pos2 = p2;

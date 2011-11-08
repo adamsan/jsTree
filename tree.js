@@ -1,33 +1,44 @@
-canvas = document.getElementById('canvas');
-ctx = canvas.getContext('2d');
+var canvas = document.getElementById('canvas');
+var ctx = canvas.getContext('2d');
 Node.prototype.counter = 0;
 function Node(x,y,lev){
 	Node.prototype.counter++;
-	var factorL = 0.55;
-	var factorR = 0.65;
+	var color = '#F00';
+	var factorL = 0.65;//62
+	var factorR = 0.65;//62
 
-	var rotation = Math.PI/3.0 ;
+	var rotationL = Math.PI/3.0 ;
+	var rotationR = -1.0*Math.PI/3.0 ;
 	var pos = {x:x||0,y:y||0},
 	    pos2 = {x:x||200,y:y||200},
 	    leftNode = null,
 	    rightNode = null,
 	    level = lev || 0;
+
+	var rotationLrand = 0;
+	var rotationRrand = 0;
+	var factorLrand = 0;//0-10
+	var factorRrand = 0;//0-10
+	var randomOption = {};
 	
 	this.addChilds = function(depth){
 
 		//make unsymmethrical tree
-		//var rnd = (Math.random()-0.5)*2;
-		//rotation +=rnd;
-		//factor *= Math.random()*0.5+0.8;
+		rotationL += ((Math.random()-0.5)*(rotationLrand/10));
+		rotationR += ((Math.random()-0.5)*(rotationRrand/10));
+		factorL *= ((Math.random()*0.5+0.75)*(factorLrand/50)+1);
+		factorR *= ((Math.random()*0.5+0.75)*(factorRrand/50)+1);
 		//
 
 		leftNode = new Node();
 		var xd = (pos2.x - pos.x)*factorL;
 		var yd = (pos2.y - pos.y)*factorL;
 		
-		var xdr = xd*Math.cos(rotation)-yd*Math.sin(rotation);
-		var ydr = xd*Math.sin(rotation)+yd*Math.cos(rotation);
+		var xdr = xd*Math.cos(rotationL)-yd*Math.sin(rotationL);
+		var ydr = xd*Math.sin(rotationL)+yd*Math.cos(rotationL);
 
+		leftNode.setRandomness(randomOption);
+		leftNode.setColor(color);
 		leftNode.setPos(pos2,{x:xdr+pos2.x,y:ydr+pos2.y});
 
 
@@ -35,9 +46,11 @@ function Node(x,y,lev){
 		xd = (pos2.x - pos.x)*factorR;
 		yd = (pos2.y - pos.y)*factorR;
 		
-		xdr = xd*Math.cos(-1*rotation)-yd*Math.sin(-1*rotation);
-		ydr = xd*Math.sin(-1*rotation)+yd*Math.cos(-1*rotation);
+		xdr = xd*Math.cos(rotationR)-yd*Math.sin(rotationR);
+		ydr = xd*Math.sin(rotationR)+yd*Math.cos(rotationR);
 
+		rightNode.setRandomness(randomOption);
+		rightNode.setColor(color);
 		rightNode.setPos(pos2,{x:xdr+pos2.x,y:ydr+pos2.y});
 
 		//recursion
@@ -48,6 +61,18 @@ function Node(x,y,lev){
 			rightNode.addChilds(depth-1);
 		}
 	}
+	this.setRandomness = function(options){
+		randomOption = options;
+		if('factorLrand' in options){factorLrand = options.factorLrand;}
+		if('factorRrand' in options){factorRrand = options.factorRrand;}
+		if('rotationLrand' in options){rotationLrand = options.rotationLrand;}
+		if('rotationRrand' in options){rotationRrand = options.rotationRrand;}
+		/*
+		if(depth && depth > 0){
+			if(leftNode){leftNode.setRandomness(options,depth-1);}
+			if(rightNode){rightNode.setRandomness(options,depth-1);}
+		}*/
+	}
 	this.setFactors = function(fL,fR){
 		factorL = fL;
 		factorR = fR;
@@ -57,7 +82,7 @@ function Node(x,y,lev){
 		pos2 = p2;
 	}
 	this.draw = function(depth){
-		ctx.strokeStyle = '#F30';
+		ctx.strokeStyle =color;
 		ctx.beginPath();
 		ctx.moveTo(pos.x,pos.y);
 		ctx.lineTo(pos2.x,pos2.y);		
@@ -71,6 +96,9 @@ function Node(x,y,lev){
 			if(rightNode){rightNode.draw(depth);}
 		}
 	}
+	this.setColor = function(c){
+		color= c || '#F00';		
+	}
 	this.info = function(){
 		return({
 			pos:pos,
@@ -81,11 +109,22 @@ function Node(x,y,lev){
 	}
 }
 
-n = new Node();
+var n = new Node();
 n.setPos({x:500,y:600},{x:500,y:370});
-n.addChilds(12);
+n.setColor('#050');
+n.setRandomness({
+	factorLrand : 0,
+	factorRrand : 0,
+	rotationLrand : 0,
+	rotationRrand : 0
+});
+n.addChilds(13);
 n.draw(1);
 
+
+n.draw(15);
+
+/*
 var drawrec = 0;
 var iv = setInterval(function(){
 	drawrec++;
@@ -93,7 +132,21 @@ var iv = setInterval(function(){
 	if(drawrec>15){
 		clearTimeout(iv);
 	}
-},400);
+},100);
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -180,5 +233,5 @@ function Mapper(l,h){
 	}
 }
 
-m1 = new Mapper();
-m2 = new Mapper(0,1000);
+var m1 = new Mapper();
+var m2 = new Mapper(0,1000);

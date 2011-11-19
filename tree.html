@@ -24,4 +24,81 @@
 <script type="text/javascript" src=Tree.js></script>
 <script type="text/javascript" src=functions.js></script>
 <script type="text/javascript" src=treeDraw.js></script>
+
+<style type="text/css">
+	.treeGui {
+		font-family:Verdana,Arial;
+	       	font-size:11px;
+		max-width:80%;
+		width:420px;
+		padding:10px 0;
+		margin:auto;
+		text-align:left;
+		border-radius:10px;
+		background:#CEF;
+	
+	}
+	.treeGui>form > div {
+		margin:8px 2px;
+	}
+	.treeGui input,.treeGui label,.treeGui button{
+		font-family:Verdana,Arial;
+	       	font-size:10px;
+		margin:0px;
+	}
+	.treeGui label{
+		text-align:right;
+		display:inline-block;
+		width:80px;
+		margin-left:5px;
+		padding-right:10px;
+	}
+	.treeGui input, .treeGui button {
+		width:80px;
+	}
+	.treeGui h1,h2,h3 {
+
+	}
+
+</style>
+<button onclick='drawTrees();'>drawTree</button>
+<!-- 
+<div id="tree_1" class="treeGui">
+	<form action="#">
+	<h3>Tree 1</h3>
+	<div>
+		<label for="pos1_x">Pos1_x: </label><input type="text" id=pos1_x placeholder=pos1_x />
+		<label for="pos1_y">Pos1_y: </label><input type="text" id=pos1_y placeholder=pos1_y />
+	</div><div>
+		<label for="pos2_x">Pos2_x: </label><input type="text" id=pos2_x placeholder=pos2_x />
+		<label for="pos2_y">Pos2_y: </label><input type="text" id=pos2_y placeholder=pos2_y />
+	</div>
+	<div>
+		<label for="rotationL">RotationL: </label><input type="text" id=rotationL placeholder=rotationL />
+		<label for="rotationLrand">RotationLrand: </label><input type="text" id=rotationLrand placeholder=rotationLrand />
+	</div>
+	<div>
+		<label for="rotationR">RotationR: </label><input type="text" id=rotationR placeholder=rotationR />
+		<label for="rotationRrand">RotationRrand: </label><input type="text" id=rotationRrand placeholder=rotationRrand />
+	</div>
+	<div>
+		<label for="leafProb">LeafProb: </label><input type="text" id=leafProb  placeholder=leafProb />
+		<label for="depth">depth of tree: </label><input type="text" id=depth  placeholder=depth  />
+	</div>
+	<div>
+		<label for="factorL">FactorL: </label><input type="text"  id="factorL" placeholder=factorL/>
+		<label for="factorLrand">FactorLrand: </label><input type="text"  id="factorLrand" placeholder=factorLrand/>
+	</div>
+	<div>
+		<label for="factorR">FactorR: </label><input type="text"  id="factorR" placeholder=factorR />
+		<label for="factorRrand">FactorRrand: </label><input type="text"  id="factorRrand" placeholder="factorRrand" />
+	</div>
+	<div>
+		<label for="color">Color: </label><input type="text"  id="color" placeholder=color />
+		<label for=""></label>
+		<button>Calculate</button>
+	</div>
+</form>
+</div>
+-->
 </html>
